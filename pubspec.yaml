@@ -1,7 +1,7 @@
 name: web_scraper
 description: A simple web scraper for dart and flutter.
 version: 0.0.1
-author: Tushar Ojha
+author: Tushar Ojha <tusharojha2001@gmail.com>
 homepage: https://github.com/tusharojha/web_scraper
 
 environment:
