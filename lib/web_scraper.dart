@@ -13,7 +13,6 @@ import 'package:html/dom.dart'; // Contains DOM related classes for extracting d
 
 /// WebScraper Main Class
 class WebScraper {
-
   // Response Object of web scrapping the website
   var _response;
 
@@ -21,30 +20,34 @@ class WebScraper {
   String baseUrl;
 
   /// Creates the web scraper instance
-  WebScraper(String baseUrl){
-    if(baseUrl=='' || baseUrl==null) throw WebScraperException("Base Url cannot be empty inside the constructor");
+  WebScraper(String baseUrl) {
+    if (baseUrl == '' || baseUrl == null)
+      throw WebScraperException(
+          "Base Url cannot be empty inside the constructor");
     this.baseUrl = baseUrl;
   }
-  
+
   /// Loads the webpage into response object
   Future<bool> loadWebPage(String route) async {
-    if(baseUrl!=null || baseUrl!=''){
+    if (baseUrl != null || baseUrl != '') {
       var client = Client();
-      _response = await client.get(
-        baseUrl + route
-      );
+      _response = await client.get(baseUrl + route);
       return true;
     }
     return false;
   }
 
   /// Returns webpage's html in string format
-  String getPageContent() => _response!=null ? _response.body.toString() : "ERROR: Webpage need to be loaded first, try calling loadWebPage";
+  String getPageContent() => _response != null
+      ? _response.body.toString()
+      : "ERROR: Webpage need to be loaded first, try calling loadWebPage";
 
   /// Returns List of elements found at specified address
   /// example address: "div.item > a.title" where item and title are class names of div and a tag respectively.
-  List<Map<String, dynamic>> getElement(String address, List<String> attribs){
-    if(_response==null) throw WebScraperException("getElement cannot be called before loadWebPage");
+  List<Map<String, dynamic>> getElement(String address, List<String> attribs) {
+    if (_response == null)
+      throw WebScraperException(
+          "getElement cannot be called before loadWebPage");
     // Using html parser and query selector to get a list of particular element
     var document = parse(_response.body);
     List<Element> elements = document.querySelectorAll(address);
@@ -52,10 +55,8 @@ class WebScraper {
 
     for (var element in elements) {
       List<Map<String, dynamic>> attribData = [];
-      for(var attrib in attribs){
-        attribData.add({
-          attrib: element.attributes[attrib]
-        });
+      for (var attrib in attribs) {
+        attribData.add({attrib: element.attributes[attrib]});
       }
       elementData.add({
         'title': element.text,
@@ -69,7 +70,7 @@ class WebScraper {
 /// WebScraperException throws exception with specified message
 class WebScraperException implements Exception {
   var _message;
-  WebScraperException(String message){
+  WebScraperException(String message) {
     this._message = message;
   }
   String errorMessage() {
