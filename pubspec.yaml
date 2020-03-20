@@ -1,5 +1,5 @@
 name: web_scraper
-description: A simple web scraper for dart and flutter.
+description: A simple web scraper to scrape HTML tags and their attributes for dart and flutter.
 version: 0.0.1
 author: Tushar Ojha <tusharojha2001@gmail.com>
 homepage: https://github.com/tusharojha/web_scraper
