@@ -1,4 +1,4 @@
-[![Pub](https://img.shields.io/pub/v/simple_coverflow.svg)](https://pub.dev/packages/web_scraper)
+[![Pub](https://img.shields.io/pub/v/web_scraper.svg)](https://pub.dev/packages/web_scraper)
 ## A Simple Web Scraper for Dart & Flutter
 
 A very basic web scraper implementation to scrap html elements from a web page.
