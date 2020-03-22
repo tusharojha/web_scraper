@@ -57,10 +57,10 @@ class _WebScraperAppState extends State<WebScraperApp> {
                       itemCount: productNames.length,
                       itemBuilder: (BuildContext context, int index) {
                         // Attributes are in the form of List<Map<String, dynamic>>.
-                        List<Map<String, dynamic>> attributes =
+                        Map<String, dynamic> attributes =
                             productNames[index]['attributes'];
                         return ExpansionTile(
-                          title: Text(attributes[1]['title']),
+                          title: Text(attributes['title']),
                           children: <Widget>[
                             Padding(
                               padding: const EdgeInsets.all(10.0),
@@ -68,7 +68,7 @@ class _WebScraperAppState extends State<WebScraperApp> {
                                 onTap: () {
                                   // uses UI Launcher to launch in web browser & minor tweaks to generate url
                                   launch(webScraper.baseUrl +
-                                      attributes[0]['href']);
+                                      attributes['href']);
                                 },
                                 child: Text(
                                   "View Product",

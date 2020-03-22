@@ -45,6 +45,7 @@ class WebScraper {
   /// Returns List of elements found at specified address
   /// example address: "div.item > a.title" where item and title are class names of div and a tag respectively.
   List<Map<String, dynamic>> getElement(String address, List<String> attribs) {
+    // attribs are the list of attributes required to extract from the html tag(s) ex. ['href', 'title']
     if (_response == null)
       throw WebScraperException(
           "getElement cannot be called before loadWebPage");
@@ -54,9 +55,9 @@ class WebScraper {
     List<Map<String, dynamic>> elementData = [];
 
     for (var element in elements) {
-      List<Map<String, dynamic>> attribData = [];
-      for (var attrib in attribs) {
-        attribData.add({attrib: element.attributes[attrib]});
+      Map<String, dynamic> attribData = new Map<String, dynamic>();
+      for (String attrib in attribs) {
+        attribData[attrib]= element.attributes[attrib];
       }
       elementData.add({
         'title': element.text,

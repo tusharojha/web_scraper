@@ -255,10 +255,10 @@ packages:
   web_scraper:
     dependency: "direct main"
     description:
-      name: web_scraper
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.0.1"
+      path: ".."
+      relative: true
+    source: path
+    version: "0.0.3"
   xml:
     dependency: transitive
     description:
