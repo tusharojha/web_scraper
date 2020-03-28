@@ -1,3 +1,5 @@
+### `develop` branch will be merged to `master` only on the release of stable version
+
 [![Pub](https://img.shields.io/pub/v/web_scraper.svg)](https://pub.dev/packages/web_scraper)
 ## A Simple Web Scraper for Dart & Flutter
 
