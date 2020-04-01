@@ -10,11 +10,15 @@ library web_scraper;
 import 'package:http/http.dart'; // Contains a client for making API calls
 import 'package:html/parser.dart'; // Contains HTML parsers to generate a Document object
 import 'package:html/dom.dart'; // Contains DOM related classes for extracting data from elements
+import 'dart:async';
 
 /// WebScraper Main Class
 class WebScraper {
   // Response Object of web scrapping the website
   var _response;
+
+  // time elapsed in loading in milliseconds
+  int timeElaspsed;
 
   // base url of the website to be scrapped
   String baseUrl;
@@ -31,7 +35,19 @@ class WebScraper {
   Future<bool> loadWebPage(String route) async {
     if (baseUrl != null || baseUrl != '') {
       var client = Client();
-      _response = await client.get(baseUrl + route);
+      try {
+        _response = await client.get(baseUrl + route);
+
+        // Calculating Time Elapsed using timer from dart:async
+        Timer.periodic(Duration(milliseconds: 1), (timer) {
+          if (_response != null) {
+            timeElaspsed = timer.tick;
+            timer.cancel();
+          }
+        });
+      } catch (e) {
+        throw WebScraperException(e.message);
+      }
       return true;
     }
     return false;
@@ -57,7 +73,7 @@ class WebScraper {
     for (var element in elements) {
       Map<String, dynamic> attribData = new Map<String, dynamic>();
       for (String attrib in attribs) {
-        attribData[attrib]= element.attributes[attrib];
+        attribData[attrib] = element.attributes[attrib];
       }
       elementData.add({
         'title': element.text,

@@ -8,12 +8,18 @@ void main() {
   group('Complete Web Scraper Test', () {
     bool page;
     List<Map<String, dynamic>> productNames = [];
-    test('Loads Webpage', () async{
+    test('Loads Webpage', () async {
       page = await webScraper.loadWebPage('/test-sites/e-commerce/allinone');
       expect(page, true);
     });
-    test('Parse tags', () async{
-      productNames = webScraper.getElement('div.thumbnail > div.caption > h4 > a.title', ['href', 'title']);
+    test('Elapsed Time', () {
+      // time elapsed is integral value (in milliseconds)
+      int timeElapsed = webScraper.timeElaspsed;
+      expect(timeElapsed, isNotNull);
+    });
+    test('Parse tags', () async {
+      productNames = webScraper.getElement(
+          'div.thumbnail > div.caption > h4 > a.title', ['href', 'title']);
       expect(productNames, isNotNull);
     });
   });
