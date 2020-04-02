@@ -15,6 +15,7 @@ void main() {
     test('Elapsed Time', () {
       // time elapsed is integral value (in milliseconds)
       int timeElapsed = webScraper.timeElaspsed;
+      print("Elapsed Time(in Milliseconds): " + timeElapsed.toString());
       expect(timeElapsed, isNotNull);
     });
     test('Parse tags', () async {

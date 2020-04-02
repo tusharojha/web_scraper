@@ -34,17 +34,16 @@ class WebScraper {
   /// Loads the webpage into response object
   Future<bool> loadWebPage(String route) async {
     if (baseUrl != null || baseUrl != '') {
+      final stopwatch = Stopwatch()..start();
       var client = Client();
       try {
         _response = await client.get(baseUrl + route);
-
-        // Calculating Time Elapsed using timer from dart:async
-        Timer.periodic(Duration(milliseconds: 1), (timer) {
-          if (_response != null) {
-            timeElaspsed = timer.tick;
-            timer.cancel();
-          }
-        });
+        // Calculating Time Elapsed using timer from dart:core
+        if (_response != null) {
+          timeElaspsed = stopwatch.elapsed.inMilliseconds;
+          stopwatch.stop();
+          stopwatch.reset();
+        }
       } catch (e) {
         throw WebScraperException(e.message);
       }
