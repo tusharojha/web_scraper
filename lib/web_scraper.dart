@@ -52,10 +52,73 @@ class WebScraper {
     return false;
   }
 
+  /// Returns the list of all data enclosed in script tags of the document
+  List<String> getAllScripts() {
+
+    // _response should not be null (loadWebPage must be called before getAllScripts)
+    assert(_response!=null);
+    var document = parse(_response.body);
+
+    // quering the list of elements by tag names
+    List<Element> scripts = document.getElementsByTagName("script");
+    List<String> result = [];
+
+    // looping in all script tags of the document
+    for (Element script in scripts){
+      // adds the data enclosed in script tags 
+      // ex. if document contains <script> var a = 3; </script>
+      // var a = 3; will be added to result
+      result.add(script.text);
+    }
+    return result;
+  }
+
+  /// Returns Map between given variable names and list of their occurence in the script tags
+  // ex. if document contains 
+  // <script> var a = 15; var b = 10; </script>
+  // <script> var a = 9; </script>
+  // method will return {a: ['var a = 15;', 'var a = 9;'], b: ['var b = 10;'] }
+  Map<String, dynamic> getScriptVariables(List<String> variableNames) {
+    
+    // _response should not be null (loadWebPage must be called before getScriptVariables)
+    assert(_response!=null);
+    var document = parse(_response.body);
+    
+    // quering the list of elements by tag names
+    List<Element> scripts = document.getElementsByTagName("script");
+
+    Map<String, List<String>> result = new Map<String, List<String>>();
+
+    // looping in all the script tags of the document
+    for (Element script in scripts){
+      
+      // looping in all the variable names required to extract
+      for (String variableName in variableNames){
+
+        // regular expression to get the variable names
+        RegExp re = new RegExp('$variableName = .*?;', multiLine: true);
+        //  Iterate all matches
+        Iterable matches = re.allMatches(script.text); 
+        matches.forEach((match) {
+          if(match!=null){
+            // list for all the occurence of the variable name
+            List<String> temp = result[variableName];
+            if(result[variableName]==null)
+              temp = [];
+            temp.add(script.text.substring(match.start, match.end));
+            result[variableName] = temp;
+          }
+        });
+      }
+    }
+    
+    // returning final result i.e. Map of variable names with the list of their occurence
+    return result;
+  }
   /// Returns webpage's html in string format
   String getPageContent() => _response != null
       ? _response.body.toString()
-      : "ERROR: Webpage need to be loaded first, try calling loadWebPage";
+      : throw WebScraperException("ERROR: Webpage need to be loaded first, try calling loadWebPage");
 
   /// Returns List of elements found at specified address
   /// example address: "div.item > a.title" where item and title are class names of div and a tag respectively.

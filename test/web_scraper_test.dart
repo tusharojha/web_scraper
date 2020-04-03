@@ -22,6 +22,18 @@ void main() {
       productNames = webScraper.getElement(
           'div.thumbnail > div.caption > h4 > a.title', ['href', 'title']);
       expect(productNames, isNotNull);
+    }); 
+    test('Fetching All Scripts', () {
+      List<String> scripts = webScraper.getAllScripts();
+      print("List of all script tags: ");
+      print(scripts);
+      expect(scripts, isNotNull);
+    });
+    test('Fetching Script variables', () {
+      Map<String, List<String>> variables = webScraper.getScriptVariables(['j.async']);
+      print("List of all variable occurences: ");
+      print(variables);
+      expect(variables, isNotNull);
     });
   });
 }
