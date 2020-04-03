@@ -30,6 +30,16 @@ then,
 
 ```
 
+## Methods
+
+| Method | Description | Arguments | Return Type
+|---|---|---|---|
+| loadWebPage | Loads the webpage into response object | String route | Future `<bool>` |
+| getPageContent | Returns webpage's html in string format | Void | String body |
+| getElement | Returns List of elements found at specified address | String address, List `<String>` attributes | List `<Map<String, dynamic>>` |
+| getAllScripts | Returns the list of all data enclosed in script tags of the document | Void | List `<String>` |
+| getScriptVariables | Returns Map between given variable names and list of their occurence in the script tags | List `<String>` variableNames | Map `<String, dynamic>` |
+
 ## Contribute to the package at GitHub.
 - File bugs, features, etc.
 - Fix bugs and send pull requests

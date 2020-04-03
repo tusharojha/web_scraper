@@ -1,3 +1,9 @@
+## [0.0.5] - 03/04/2020
+
+* getAllScripts added
+* getScriptVariables implemented
+* Improved error reporting
+  
 ## [0.0.3] - 22/03/2020
 
 * Converted List of Maps of attributes to a single Map in repsonse
