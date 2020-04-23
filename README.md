@@ -30,6 +30,8 @@ then,
 
 ```
 
+Checkout [`web_scraper_test.dart`](/test/web_scraper_test.dart) file to have closer look on all functionalities.
+
 ## Methods
 
 | Method | Description | Arguments | Return Type
