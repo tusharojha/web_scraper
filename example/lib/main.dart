@@ -16,6 +16,7 @@ class _WebScraperAppState extends State<WebScraperApp> {
 
   // Response of getElement is always List<Map<String, dynamic>>
   List<Map<String, dynamic>> productNames;
+  List<Map<String, dynamic>> productDescriptions;
 
   void fetchProducts() async {
     // Loads web page and downloads into local state of library
@@ -26,7 +27,10 @@ class _WebScraperAppState extends State<WebScraperApp> {
         // it will return the attributes in the same order passed
         productNames = webScraper.getElement(
             'div.thumbnail > div.caption > h4 > a.title', ['href', 'title']);
+        productDescriptions = webScraper.getElement(
+            'div.thumbnail > div.caption > p.description', ['class']);
       });
+
     }
   }
 
@@ -64,16 +68,21 @@ class _WebScraperAppState extends State<WebScraperApp> {
                           children: <Widget>[
                             Padding(
                               padding: const EdgeInsets.all(10.0),
-                              child: InkWell(
-                                onTap: () {
-                                  // uses UI Launcher to launch in web browser & minor tweaks to generate url
-                                  launch(webScraper.baseUrl +
-                                      attributes['href']);
-                                },
-                                child: Text(
-                                  "View Product",
-                                  style: TextStyle(color: Colors.blue),
-                                ),
+                              child: Column(
+                                children: <Widget>[
+                                  Container(child: Text(productDescriptions[index]['title']), margin: EdgeInsets.only(bottom: 10.0),),
+                                  InkWell(
+                                    onTap: () {
+                                      // uses UI Launcher to launch in web browser & minor tweaks to generate url
+                                      launch(webScraper.baseUrl +
+                                          attributes['href']);
+                                    },
+                                    child: Text(
+                                      "View Product",
+                                      style: TextStyle(color: Colors.blue),
+                                    ),
+                                  ),
+                                ],
                               ),
                             )
                           ],

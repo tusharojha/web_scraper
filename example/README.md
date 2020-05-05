@@ -20,6 +20,7 @@ then,
 This example scrapes the data from a website `https://webscraper.io` and  with a particular route and displays in form of expansion tiles. 
 This example also uses `url_launcher` package to redirect default web browser.
 
+![Image of Example App](screenshots/1.jpeg)
 
 ## Contribute to the package at GitHub.
 - File bugs, features, etc.
