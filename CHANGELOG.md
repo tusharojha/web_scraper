@@ -1,3 +1,7 @@
+## [0.0.6] - 23/06/2020
+
+* Removed dependency on Flutter.
+
 ## [0.0.5] - 03/04/2020
 
 * getAllScripts added
