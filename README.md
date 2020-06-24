@@ -1,33 +1,36 @@
 [![Pub](https://img.shields.io/pub/v/web_scraper.svg)](https://pub.dev/packages/web_scraper)
-## A Simple Web Scraper for Dart & Flutter
+
+# A Simple Web Scraper for Dart & Flutter
 
 A very basic web scraper implementation to scrap html elements from a web page.
 
 Pull requests certainly welcome.
 
+## Getting Started
 
-## Installation
 In your `pubspec.yaml` root add:
 
 ```yaml
 dependencies:
-  web_scraper: LATEST_VERSION_NUMBER
+  web_scraper:
 ```
 
 then,
 
-`import 'package:web_scraper/web_scraper.dart';`
+```dart
+import 'package:web_scraper/web_scraper.dart';
+```
 
+Note that as of version 0.0.6, the project supports not only Flutter projects, but also Dart projects.
 
 ## Implementation
 
 ```dart
     final webScraper = WebScraper('https://webscraper.io');
-    if(await webScraper.loadWebPage('/test-sites/e-commerce/allinone')){
+    if (await webScraper.loadWebPage('/test-sites/e-commerce/allinone')) {
         List<Map<String, dynamic>> elements = webScraper.getElement('h3.title > a.caption', ['href']);
         print(elements);
     }
-
 ```
 
 Checkout [`web_scraper_test.dart`](/test/web_scraper_test.dart) file to have closer look on all functionalities.
@@ -42,7 +45,8 @@ Checkout [`web_scraper_test.dart`](/test/web_scraper_test.dart) file to have clo
 | getAllScripts | Returns the list of all data enclosed in script tags of the document | Void | List `<String>` |
 | getScriptVariables | Returns Map between given variable names and list of their occurence in the script tags | List `<String>` variableNames | Map `<String, dynamic>` |
 
-## Contribute to the package at GitHub.
-- File bugs, features, etc.
-- Fix bugs and send pull requests
-- Review pull requests
+## Contributing
+
+- Please branch from _develop_ to implement bug fix/new feature.
+  - Ensure that code is formatted according to base dart rules.
+- Open a PR with _develop_ as the PR target with a clear description.

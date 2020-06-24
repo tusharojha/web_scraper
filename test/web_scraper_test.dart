@@ -1,5 +1,4 @@
-import 'package:flutter_test/flutter_test.dart';
-
+import 'package:test/test.dart';
 import 'package:web_scraper/web_scraper.dart';
 
 void main() {
@@ -20,9 +19,11 @@ void main() {
     });
     test('Parse tags', () async {
       productNames = webScraper.getElement(
-          'div.thumbnail > div.caption > h4 > a.title', ['href', 'title']);
+        'div.thumbnail > div.caption > h4 > a.title',
+        ['href', 'title'],
+      );
       expect(productNames, isNotNull);
-    }); 
+    });
     test('Fetching All Scripts', () {
       List<String> scripts = webScraper.getAllScripts();
       print("List of all script tags: ");
@@ -30,7 +31,8 @@ void main() {
       expect(scripts, isNotNull);
     });
     test('Fetching Script variables', () {
-      Map<String, List<String>> variables = webScraper.getScriptVariables(['j.async']);
+      Map<String, List<String>> variables =
+          webScraper.getScriptVariables(['j.async']);
       print("List of all variable occurences: ");
       print(variables);
       expect(variables, isNotNull);
