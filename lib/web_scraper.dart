@@ -7,10 +7,13 @@
 
 library web_scraper;
 
-import 'package:http/http.dart'; // Contains a client for making API calls
-import 'package:html/parser.dart'; // Contains HTML parsers to generate a Document object
-import 'package:html/dom.dart'; // Contains DOM related classes for extracting data from elements
 import 'dart:async';
+
+import 'package:html/dom.dart'; // Contains DOM related classes for extracting data from elements
+import 'package:html/parser.dart'; // Contains HTML parsers to generate a Document object
+import 'package:http/http.dart'; // Contains a client for making API calls
+
+import 'validation.dart';
 
 /// WebScraper Main Class
 class WebScraper {
@@ -23,11 +26,13 @@ class WebScraper {
   // base url of the website to be scrapped
   String baseUrl;
 
+  Map<int, Client> Clients;
+
   /// Creates the web scraper instance
   WebScraper(String baseUrl) {
-    if (baseUrl == '' || baseUrl == null) {
-      throw WebScraperException(
-          "Base Url cannot be empty inside the constructor");
+    var v = new Validation().isBaseURL(baseUrl);
+    if (!v.Is) {
+      throw WebScraperException(v.Description);
     }
     this.baseUrl = baseUrl;
   }
@@ -37,6 +42,7 @@ class WebScraper {
     if (baseUrl != null || baseUrl != '') {
       final stopwatch = Stopwatch()..start();
       var client = Client();
+
       try {
         _response = await client.get(baseUrl + route);
         // Calculating Time Elapsed using timer from dart:core
