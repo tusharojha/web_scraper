@@ -45,8 +45,15 @@ class Validation {
         }
       });
       String newStr = "";
+      var i = 0;
       hostSlice.forEach((String e) {
-        newStr = newStr + "/" + e;
+
+        if (i > 0) {
+          newStr = newStr+"/"+e;
+        } else {
+          newStr += e;
+        }
+        i++;
       });
       str = newStr;
     }
