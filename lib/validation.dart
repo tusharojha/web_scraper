@@ -6,8 +6,7 @@ class Validation {
   static RegExp _ipv4Maybe =
       new RegExp(r'^(\d?\d?\d)\.(\d?\d?\d)\.(\d?\d?\d)\.(\d?\d?\d)$');
 
-  //
-  ValidationRet isBaseURL(String str) {
+  ValidationReturn isBaseURL(String str) {
     const protocols = ['http', 'https'];
     var protocol, split, host;
 
@@ -16,20 +15,20 @@ class Validation {
     if (split.length > 1) {
       protocol = _shift(split);
       if (protocols.indexOf(protocol) == -1) {
-        return ValidationRet(false, "use [http/https] protocol");
+        return ValidationReturn(false, "use [http/https] protocol");
       }
     } else {
-      return ValidationRet(false,
+      return ValidationReturn(false,
           "bring url to the format scheme:[//]domain; EXAMPLE: https://google.com");
     }
 
     // check host
     host = _removeUnnecessarySlash(_shift(split));
     if (!_isIP(host) && !_isFQDN(host) && host != 'localhost') {
-      return ValidationRet(
+      return ValidationReturn(
           false, "URL should contain only domain without path");
     }
-    return ValidationRet(true, "ok");
+    return ValidationReturn(true, "ok");
   }
 
   //remove unnecessary '/' after domain.
@@ -47,9 +46,8 @@ class Validation {
       String newStr = "";
       var i = 0;
       hostSlice.forEach((String e) {
-
         if (i > 0) {
-          newStr = newStr+"/"+e;
+          newStr = newStr + "/" + e;
         } else {
           newStr += e;
         }
@@ -113,9 +111,9 @@ class Validation {
   }
 }
 
-class ValidationRet {
-  bool Is;
-  String Description;
+class ValidationReturn {
+  bool isCorrect;
+  String description;
 
-  ValidationRet(this.Is, this.Description);
+  ValidationReturn(this.isCorrect, this.description);
 }

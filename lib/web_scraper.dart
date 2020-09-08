@@ -31,8 +31,8 @@ class WebScraper {
   /// Creates the web scraper instance
   WebScraper(String baseUrl) {
     var v = new Validation().isBaseURL(baseUrl);
-    if (!v.Is) {
-      throw WebScraperException(v.Description);
+    if (!v.isCorrect) {
+      throw WebScraperException(v.description);
     }
     this.baseUrl = baseUrl;
   }
@@ -140,7 +140,7 @@ class WebScraper {
     List<Map<String, dynamic>> elementData = [];
 
     for (var element in elements) {
-      Map<String, dynamic> attribData = new Map<String, dynamic>();
+      Map<String, dynamic> attribData = Map<String, dynamic>();
       for (String attrib in attribs) {
         attribData[attrib] = element.attributes[attrib];
       }
