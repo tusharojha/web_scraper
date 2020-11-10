@@ -4,7 +4,7 @@
 
 A very basic web scraper implementation to scrap html elements from a web page.
 
-Pull requests certainly welcome.
+Pull requests are most welcome.
 
 ## Getting Started
 
@@ -48,5 +48,5 @@ Checkout [`web_scraper_test.dart`](/test/web_scraper_test.dart) file to have clo
 ## Contributing
 
 - Please branch from _develop_ to implement bug fix/new feature.
-  - Ensure that code is formatted according to base dart rules.
+- Ensure that code is formatted according to base dart rules.
 - Open a PR with _develop_ as the PR target with a clear description.
