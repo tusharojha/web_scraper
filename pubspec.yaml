@@ -4,7 +4,7 @@ version: 0.0.6
 homepage: https://github.com/tusharojha/web_scraper
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: ">=2.10.3 <3.0.0"
 
 dependencies:
   html: ^0.14.0+3
@@ -12,3 +12,4 @@ dependencies:
 
 dev_dependencies:
   test: ^1.15.0
+  pedantic: ^1.9.0

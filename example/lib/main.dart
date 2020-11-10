@@ -10,7 +10,6 @@ class WebScraperApp extends StatefulWidget {
 }
 
 class _WebScraperAppState extends State<WebScraperApp> {
-
   // initialize WebScraper by passing base url of website
   final webScraper = WebScraper('https://webscraper.io');
 
@@ -30,7 +29,6 @@ class _WebScraperAppState extends State<WebScraperApp> {
         productDescriptions = webScraper.getElement(
             'div.thumbnail > div.caption > p.description', ['class']);
       });
-
     }
   }
 
@@ -55,7 +53,8 @@ class _WebScraperAppState extends State<WebScraperApp> {
           body: SafeArea(
               child: productNames == null
                   ? Center(
-                      child: CircularProgressIndicator(), // Loads Circular Loading Animation
+                      child:
+                          CircularProgressIndicator(), // Loads Circular Loading Animation
                     )
                   : ListView.builder(
                       itemCount: productNames.length,
@@ -70,7 +69,11 @@ class _WebScraperAppState extends State<WebScraperApp> {
                               padding: const EdgeInsets.all(10.0),
                               child: Column(
                                 children: <Widget>[
-                                  Container(child: Text(productDescriptions[index]['title']), margin: EdgeInsets.only(bottom: 10.0),),
+                                  Container(
+                                    child: Text(
+                                        productDescriptions[index]['title']),
+                                    margin: EdgeInsets.only(bottom: 10.0),
+                                  ),
                                   InkWell(
                                     onTap: () {
                                       // uses UI Launcher to launch in web browser & minor tweaks to generate url
