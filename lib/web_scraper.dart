@@ -99,7 +99,7 @@ class WebScraper {
       // looping in all the variable names required to extract
       for (String variableName in variableNames) {
         // regular expression to get the variable names
-        RegExp re = RegExp('$variableName = .*?;', multiLine: true);
+        RegExp re = RegExp('$variableName *=.*?;(?=([^\"\']*\"[^\"\']*\")*[^\"\']*$)', multiLine: true);
         //  Iterate all matches
         Iterable matches = re.allMatches(script.text);
         matches.forEach((match) {
