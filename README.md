@@ -21,7 +21,7 @@ then,
 import 'package:web_scraper/web_scraper.dart';
 ```
 
-Note that as of version 0.0.6, the project supports not only Flutter projects, but also Dart projects.
+Note that as of version **0.0.6**, the project supports not only Flutter projects, but also Dart projects.
 
 ## Implementation
 
