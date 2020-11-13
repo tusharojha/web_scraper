@@ -21,7 +21,7 @@ then,
 import 'package:web_scraper/web_scraper.dart';
 ```
 
-Note that as of version 0.0.6, the project supports not only Flutter projects, but also Dart projects.
+Note that as of version **0.0.6**, the project supports not only Flutter projects, but also Dart projects.
 
 ## Implementation
 
@@ -48,5 +48,5 @@ Checkout [`web_scraper_test.dart`](/test/web_scraper_test.dart) file to have clo
 ## Contributing
 
 - Please branch from _develop_ to implement bug fix/new feature.
-- Ensure that code is formatted according to base dart rules.
+- Ensure that code is formatted according to base dart rules & using the latest stable version of dart.
 - Open a PR with _develop_ as the PR target with a clear description.

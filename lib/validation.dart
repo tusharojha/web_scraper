@@ -10,7 +10,7 @@ class Validation {
     const protocols = ['http', 'https'];
     var protocol, split, host;
 
-    // check protocol
+    // Checking the protocol.
     split = str.split('://');
     if (split.length > 1) {
       protocol = _shift(split);
@@ -22,7 +22,7 @@ class Validation {
           "bring url to the format scheme:[//]domain; EXAMPLE: https://google.com");
     }
 
-    // check host
+    // Checking the host.
     host = _removeUnnecessarySlash(_shift(split));
     if (!_isIP(host) && !_isFQDN(host) && host != 'localhost') {
       return ValidationReturn(
@@ -31,9 +31,9 @@ class Validation {
     return ValidationReturn(true, "ok");
   }
 
-  //remove unnecessary '/' after domain.
-  // It was: 'google.com////' It became 'google.com';
-  // It was: 'google.com//search//' It became 'google.com/search';
+  // Remove unnecessary '/' after domain.
+  // Ex.: 'google.com////' will become 'google.com'.
+  // Ex.: 'google.com//search//' will become 'google.com/search'.
   String _removeUnnecessarySlash(String str) {
     var s = str.split("/");
     if (s.length > 1) {
