@@ -3,41 +3,41 @@ import 'package:web_scraper/validation.dart';
 
 void main() {
   test('Error: use [http/https] protocol', () {
-    var val = Validation().isBaseURL("htp://google.com");
+    var val = Validation().isBaseURL('htp://google.com');
     expect(val.isCorrect, false);
-    expect(val.description, "use [http/https] protocol");
+    expect(val.description, 'use [http/https] protocol');
   });
 
   test(
       'Error: bring url to the format scheme:[//]domain; EXAMPLE: https://google.com',
       () {
-    var val = Validation().isBaseURL("http:/google.com");
+    var val = Validation().isBaseURL('http:/google.com');
     expect(val.isCorrect, false);
     expect(val.description,
-        "bring url to the format scheme:[//]domain; EXAMPLE: https://google.com");
+        'bring url to the format scheme:[//]domain; EXAMPLE: https://google.com');
   });
 
   test('Error: URL should contain only domain without path', () {
-    var val = Validation().isBaseURL("http://google.com/q");
+    var val = Validation().isBaseURL('http://google.com/q');
     expect(val.isCorrect, false);
-    expect(val.description, "URL should contain only domain without path");
+    expect(val.description, 'URL should contain only domain without path');
   });
   test(
       'Remove unnecessary slash and Error: URL should contain only domain without path',
       () {
-    var val = Validation().isBaseURL("http://google.com///q/b//f");
+    var val = Validation().isBaseURL('http://google.com///q/b//f');
     expect(val.isCorrect, false);
-    expect(val.description, "URL should contain only domain without path");
+    expect(val.description, 'URL should contain only domain without path');
   });
 
   test('Sucess validate url', () {
-    var val = Validation().isBaseURL("http://google.com");
+    var val = Validation().isBaseURL('http://google.com');
     expect(val.isCorrect, true);
-    expect(val.description, "ok");
+    expect(val.description, 'ok');
   });
   test('Sucess validate url and remove unnecessary slash', () {
-    var val = Validation().isBaseURL("http://google.com///////////////");
+    var val = Validation().isBaseURL('http://google.com///////////////');
     expect(val.isCorrect, true);
-    expect(val.description, "ok");
+    expect(val.description, 'ok');
   });
 }

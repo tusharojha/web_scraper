@@ -246,5 +246,5 @@ packages:
     source: path
     version: "0.0.7"
 sdks:
-  dart: ">=2.10.3 <2.11.0"
+  dart: ">=2.10.2 <2.11.0"
   flutter: ">=1.22.0 <2.0.0"
