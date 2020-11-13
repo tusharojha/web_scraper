@@ -1,6 +1,13 @@
+## [0.0.7] - 13/11/2020
+
+* Added URL validation for endpoints
+* Updated RegEx to scrape script variables
+* Updated to latest dart version 2.10.3
+* Improved documentation
+
 ## [0.0.6] - 23/06/2020
 
-* Removed dependency on Flutter.
+* Removed dependency on Flutter
 
 ## [0.0.5] - 03/04/2020
 
