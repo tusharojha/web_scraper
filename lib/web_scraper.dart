@@ -19,6 +19,9 @@ class WebScraper {
   // Response Object of web scrapping the website.
   var _response;
 
+  // Parsed document from the response inside the try/catch of the loadWebPage() method.
+  var document;
+
   // Time elapsed in loading in milliseconds.
   int timeElaspsed;
 
@@ -49,6 +52,8 @@ class WebScraper {
           timeElaspsed = stopwatch.elapsed.inMilliseconds;
           stopwatch.stop();
           stopwatch.reset();
+          // Parses the response body once it's retrieved and stores it on the var document defined on line 23.
+          document = parse(_response.body);
         }
       } catch (e) {
         throw WebScraperException(e.message);
@@ -62,7 +67,6 @@ class WebScraper {
   List<String> getAllScripts() {
     // The _response should not be null (loadWebPage must be called before getAllScripts).
     assert(_response != null);
-    var document = parse(_response.body);
 
     // Quering the list of elements by tag names.
     var scripts = document.getElementsByTagName('script');
@@ -86,7 +90,6 @@ class WebScraper {
   Map<String, dynamic> getScriptVariables(List<String> variableNames) {
     // The _response should not be null (loadWebPage must be called before getScriptVariables).
     assert(_response != null);
-    var document = parse(_response.body);
 
     // Quering the list of elements by tag names.
     var scripts = document.getElementsByTagName('script');
@@ -127,6 +130,57 @@ class WebScraper {
       : throw WebScraperException(
           'ERROR: Webpage need to be loaded first, try calling loadWebPage');
 
+  /// Returns List of elements titles found at specified address.
+  /// Example address: "div.item > a.title" where item and title are class names of div and a tag respectively.
+  /// For ease of access, when using Chrome inspection tool, right click the item you want to copy, then click "Inspect" and at the console, right click the highlighted item, right click and then click "Copy > Copy selector" and provide as String address parameter to this method.
+  List<String> getElementTitle(String address) {
+    if (_response == null) {
+      throw WebScraperException(
+          'getElement cannot be called before loadWebPage');
+    }
+    // Using html parser and query selector to get a list of particular element.
+    var elements = document.querySelectorAll(address);
+    // ignore: omit_local_variable_types
+    List<String> elementData = [];
+
+    for (var element in elements) {
+      // Checks if the element's text is null before adding it to the list.
+      if (element.text != null) {
+        elementData.add(element.text);
+      }
+    }
+    return elementData;
+  }
+
+  /// Returns List of elements' attributes found at specified address respecting the provided attribute requirement.
+  /// Example address: "div.item > a.title" where item and title are class names of div and a tag respectively.
+  /// For ease of access, when using Chrome inspection tool, right click the item you want to copy, then click "Inspect" and at the console, right click the highlighted item, right click and then click "Copy > Copy selector" and provide as String parameter to this method.
+  /// Attributes are the bits of information between the HTML tags.
+  /// Per example in <div class="strong and bold" style="width: 100%;" title="Fierce!">
+  /// The element would be "div.strong.and.bold" and the possible attributes to fetch would be EIHER "style" OR "title" returning with EITHER of the values "width: 100%;" OR "Fierce!" respectively.
+  /// To retrieve multiple attributes at once from a single element, please use getElement() instead.
+  List getElementAtribute(String address, String attrib) {
+    // Attribs are the list of attributes required to extract from the html tag(s) ex. ['href', 'title'].
+    if (_response == null) {
+      throw WebScraperException(
+          'getElement cannot be called before loadWebPage');
+    }
+    // Using html parser and query selector to get a list of particular element.
+    var elements = document.querySelectorAll(address);
+    // ignore: omit_local_variable_types
+    List elementData = [];
+
+    for (var element in elements) {
+      var attribData = <String, dynamic>{};
+      attribData[attrib] = element.attributes[attrib];
+      // Checks if the element's attribute is null before adding it to the list.
+      if (attribData[attrib] != null) {
+        elementData.add(attribData[attrib]);
+      }
+    }
+    return elementData;
+  }
+
   /// Returns List of elements found at specified address.
   /// Example address: "div.item > a.title" where item and title are class names of div and a tag respectively.
   List<Map<String, dynamic>> getElement(String address, List<String> attribs) {
@@ -136,7 +190,6 @@ class WebScraper {
           'getElement cannot be called before loadWebPage');
     }
     // Using html parser and query selector to get a list of particular element.
-    var document = parse(_response.body);
     var elements = document.querySelectorAll(address);
     // ignore: omit_local_variable_types
     List<Map<String, dynamic>> elementData = [];
