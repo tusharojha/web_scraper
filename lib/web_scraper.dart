@@ -20,15 +20,13 @@ class WebScraper {
   var _response;
 
   // Parsed document from the response inside the try/catch of the loadWebPage() method.
-  var document;
+  var _document;
 
   // Time elapsed in loading in milliseconds.
   int timeElaspsed;
 
   // Base url of the website to be scrapped.
   String baseUrl;
-
-  Map<int, Client> Clients;
 
   /// Creates the web scraper instance.
   WebScraper(String baseUrl) {
@@ -52,8 +50,8 @@ class WebScraper {
           timeElaspsed = stopwatch.elapsed.inMilliseconds;
           stopwatch.stop();
           stopwatch.reset();
-          // Parses the response body once it's retrieved and stores it on the var document defined on line 23.
-          document = parse(_response.body);
+          // Parses the response body once it's retrieved to be used on the other methods.
+          _document = parse(_response.body);
         }
       } catch (e) {
         throw WebScraperException(e.message);
@@ -69,7 +67,7 @@ class WebScraper {
     assert(_response != null);
 
     // Quering the list of elements by tag names.
-    var scripts = document.getElementsByTagName('script');
+    var scripts = _document.getElementsByTagName('script');
     var result = <String>[];
 
     // Looping in all script tags of the document.
@@ -92,7 +90,7 @@ class WebScraper {
     assert(_response != null);
 
     // Quering the list of elements by tag names.
-    var scripts = document.getElementsByTagName('script');
+    var scripts = _document.getElementsByTagName('script');
 
     var result = <String, List<String>>{};
 
@@ -138,8 +136,8 @@ class WebScraper {
       throw WebScraperException(
           'getElement cannot be called before loadWebPage');
     }
-    // Using html parser and query selector to get a list of particular element.
-    var elements = document.querySelectorAll(address);
+    // Using query selector to get a list of particular element.
+    var elements = _document.querySelectorAll(address);
     // ignore: omit_local_variable_types
     List<String> elementData = [];
 
@@ -156,19 +154,19 @@ class WebScraper {
   /// Example address: "div.item > a.title" where item and title are class names of div and a tag respectively.
   /// For ease of access, when using Chrome inspection tool, right click the item you want to copy, then click "Inspect" and at the console, right click the highlighted item, right click and then click "Copy > Copy selector" and provide as String parameter to this method.
   /// Attributes are the bits of information between the HTML tags.
-  /// Per example in <div class="strong and bold" style="width: 100%;" title="Fierce!">
+  /// For example in <div class="strong and bold" style="width: 100%;" title="Fierce!">
   /// The element would be "div.strong.and.bold" and the possible attributes to fetch would be EIHER "style" OR "title" returning with EITHER of the values "width: 100%;" OR "Fierce!" respectively.
   /// To retrieve multiple attributes at once from a single element, please use getElement() instead.
-  List getElementAtribute(String address, String attrib) {
+  List<String> getElementAttribute(String address, String attrib) {
     // Attribs are the list of attributes required to extract from the html tag(s) ex. ['href', 'title'].
     if (_response == null) {
       throw WebScraperException(
           'getElement cannot be called before loadWebPage');
     }
-    // Using html parser and query selector to get a list of particular element.
-    var elements = document.querySelectorAll(address);
+    // Using query selector to get a list of particular element.
+    var elements = _document.querySelectorAll(address);
     // ignore: omit_local_variable_types
-    List elementData = [];
+    List<String> elementData = [];
 
     for (var element in elements) {
       var attribData = <String, dynamic>{};
@@ -189,8 +187,8 @@ class WebScraper {
       throw WebScraperException(
           'getElement cannot be called before loadWebPage');
     }
-    // Using html parser and query selector to get a list of particular element.
-    var elements = document.querySelectorAll(address);
+    // Using query selector to get a list of particular element.
+    var elements = _document.querySelectorAll(address);
     // ignore: omit_local_variable_types
     List<Map<String, dynamic>> elementData = [];
 
