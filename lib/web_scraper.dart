@@ -29,17 +29,19 @@ class WebScraper {
   String baseUrl;
 
   /// Creates the web scraper instance.
-  WebScraper(String baseUrl) {
-    var v = Validation().isBaseURL(baseUrl);
-    if (!v.isCorrect) {
-      throw WebScraperException(v.description);
+  WebScraper([String baseUrl]) {
+    if (baseUrl != null) {
+      var v = Validation().isBaseURL(baseUrl);
+      if (!v.isCorrect) {
+        throw WebScraperException(v.description);
+      }
+      this.baseUrl = baseUrl;
     }
-    this.baseUrl = baseUrl;
   }
 
   /// Loads the webpage into response object.
   Future<bool> loadWebPage(String route) async {
-    if (baseUrl != null || baseUrl != '') {
+    if (baseUrl != null && baseUrl != '') {
       final stopwatch = Stopwatch()..start();
       var client = Client();
 
@@ -59,6 +61,37 @@ class WebScraper {
       return true;
     }
     return false;
+  }
+
+  /// Loads the webpage URL into response object without requiring the two-step process of base + route.
+  /// Unlike the the two-step process, the URL is NOT validated before being requested.
+  Future<bool> loadFullURL(String page) async {
+    var client = Client();
+    try {
+      _response = await client.get(page);
+      // Calculating Time Elapsed using timer from dart:core.
+      if (_response != null) {
+        // Parses the response body once it's retrieved to be used on the other methods.
+        _document = parse(_response.body);
+      }
+    } catch (e) {
+      throw WebScraperException(e.message);
+    }
+    return true;
+  }
+
+  /// Loads a webpage that was previously loaded and stored as a String by using [getPageContent()].
+  /// This exists as a helper function in order to facilitate the use of [compute()] functions in your Flutter apps.
+  /// This operation is synchronous and returns a [true] bool once the string has been loaded and is ready to
+  /// be queried by either [getElement()], [getElementTitle] or [getElementAttribute].
+  bool loadFromString(String responseBodyAsString) {
+    try {
+      // Parses the response body once it's retrieved to be used on the other methods.
+      _document = parse(responseBodyAsString);
+    } catch (e) {
+      throw WebScraperException(e.message);
+    }
+    return true;
   }
 
   /// Returns the list of all data enclosed in script tags of the document.
@@ -132,7 +165,7 @@ class WebScraper {
   /// Example address: "div.item > a.title" where item and title are class names of div and a tag respectively.
   /// For ease of access, when using Chrome inspection tool, right click the item you want to copy, then click "Inspect" and at the console, right click the highlighted item, right click and then click "Copy > Copy selector" and provide as String address parameter to this method.
   List<String> getElementTitle(String address) {
-    if (_response == null) {
+    if (_document == null) {
       throw WebScraperException(
           'getElement cannot be called before loadWebPage');
     }
@@ -143,7 +176,7 @@ class WebScraper {
 
     for (var element in elements) {
       // Checks if the element's text is null before adding it to the list.
-      if (element.text != null) {
+      if (element.text.trim() != '') {
         elementData.add(element.text);
       }
     }
@@ -159,7 +192,7 @@ class WebScraper {
   /// To retrieve multiple attributes at once from a single element, please use getElement() instead.
   List<String> getElementAttribute(String address, String attrib) {
     // Attribs are the list of attributes required to extract from the html tag(s) ex. ['href', 'title'].
-    if (_response == null) {
+    if (_document == null) {
       throw WebScraperException(
           'getElement cannot be called before loadWebPage');
     }
@@ -183,7 +216,7 @@ class WebScraper {
   /// Example address: "div.item > a.title" where item and title are class names of div and a tag respectively.
   List<Map<String, dynamic>> getElement(String address, List<String> attribs) {
     // Attribs are the list of attributes required to extract from the html tag(s) ex. ['href', 'title'].
-    if (_response == null) {
+    if (_document == null) {
       throw WebScraperException(
           'getElement cannot be called before loadWebPage');
     }
