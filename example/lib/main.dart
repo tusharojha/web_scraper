@@ -48,7 +48,7 @@ class _WebScraperAppState extends State<WebScraperApp> {
       ),
       home: Scaffold(
           appBar: AppBar(
-            title: Text("Product Catalog"),
+            title: Text('Product Catalog'),
           ),
           body: SafeArea(
               child: productNames == null
@@ -81,7 +81,7 @@ class _WebScraperAppState extends State<WebScraperApp> {
                                           attributes['href']);
                                     },
                                     child: Text(
-                                      "View Product",
+                                      'View Product',
                                       style: TextStyle(color: Colors.blue),
                                     ),
                                   ),
