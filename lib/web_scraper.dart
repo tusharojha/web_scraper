@@ -9,7 +9,6 @@ library web_scraper;
 
 import 'dart:async';
 
-import 'package:html/dom.dart'; // Contains DOM related classes for extracting data from elements.
 import 'package:html/parser.dart'; // Contains HTML parsers to generate a Document object.
 import 'package:http/http.dart'; // Contains a client for making API calls.
 
@@ -30,7 +29,7 @@ class WebScraper {
 
   /// Creates the web scraper instance.
   WebScraper(String baseUrl) {
-    var v = new Validation().isBaseURL(baseUrl);
+    var v = Validation().isBaseURL(baseUrl);
     if (!v.isCorrect) {
       throw WebScraperException(v.description);
     }
@@ -66,11 +65,11 @@ class WebScraper {
     var document = parse(_response.body);
 
     // Quering the list of elements by tag names.
-    List<Element> scripts = document.getElementsByTagName("script");
-    List<String> result = [];
+    var scripts = document.getElementsByTagName('script');
+    var result = <String>[];
 
     // Looping in all script tags of the document.
-    for (Element script in scripts) {
+    for (var script in scripts) {
       /// Adds the data enclosed in script tags
       /// ex. if document contains <script> var a = 3; </script>
       /// var a = 3; will be added to result.
@@ -90,16 +89,16 @@ class WebScraper {
     var document = parse(_response.body);
 
     // Quering the list of elements by tag names.
-    List<Element> scripts = document.getElementsByTagName("script");
+    var scripts = document.getElementsByTagName('script');
 
-    Map<String, List<String>> result = Map<String, List<String>>();
+    var result = <String, List<String>>{};
 
     // Looping in all the script tags of the document.
-    for (Element script in scripts) {
+    for (var script in scripts) {
       // Looping in all the variable names that are required to extract.
-      for (String variableName in variableNames) {
+      for (var variableName in variableNames) {
         // regular expression to get the variable names
-        RegExp re = RegExp(
+        var re = RegExp(
             '$variableName *=.*?;(?=([^\"\']*\"[^\"\']*\")*[^\"\']*\$)',
             multiLine: true);
         //  Iterate all matches
@@ -107,7 +106,7 @@ class WebScraper {
         matches.forEach((match) {
           if (match != null) {
             // list for all the occurence of the variable name
-            List<String> temp = result[variableName];
+            var temp = result[variableName];
             if (result[variableName] == null) {
               temp = [];
             }
@@ -126,7 +125,7 @@ class WebScraper {
   String getPageContent() => _response != null
       ? _response.body.toString()
       : throw WebScraperException(
-          "ERROR: Webpage need to be loaded first, try calling loadWebPage");
+          'ERROR: Webpage need to be loaded first, try calling loadWebPage');
 
   /// Returns List of elements found at specified address.
   /// Example address: "div.item > a.title" where item and title are class names of div and a tag respectively.
@@ -134,16 +133,17 @@ class WebScraper {
     // Attribs are the list of attributes required to extract from the html tag(s) ex. ['href', 'title'].
     if (_response == null) {
       throw WebScraperException(
-          "getElement cannot be called before loadWebPage");
+          'getElement cannot be called before loadWebPage');
     }
     // Using html parser and query selector to get a list of particular element.
     var document = parse(_response.body);
-    List<Element> elements = document.querySelectorAll(address);
+    var elements = document.querySelectorAll(address);
+    // ignore: omit_local_variable_types
     List<Map<String, dynamic>> elementData = [];
 
     for (var element in elements) {
-      Map<String, dynamic> attribData = Map<String, dynamic>();
-      for (String attrib in attribs) {
+      var attribData = <String, dynamic>{};
+      for (var attrib in attribs) {
         attribData[attrib] = element.attributes[attrib];
       }
       elementData.add({
@@ -159,7 +159,7 @@ class WebScraper {
 class WebScraperException implements Exception {
   var _message;
   WebScraperException(String message) {
-    this._message = message;
+    _message = message;
   }
   String errorMessage() {
     return _message;

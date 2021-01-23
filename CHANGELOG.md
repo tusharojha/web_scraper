@@ -1,3 +1,8 @@
+## [0.0.8] - 13/11/2020
+
+* Added pedantic for internal testing
+* Updated code quality & formatting
+  
 ## [0.0.7] - 13/11/2020
 
 * Added URL validation for endpoints

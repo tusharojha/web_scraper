@@ -6,15 +6,15 @@ void main() {
 
   group('Complete Web Scraper Test', () {
     bool page;
-    List<Map<String, dynamic>> productNames = [];
+    var productNames = <Map<String, dynamic>>[];
     test('Loads Webpage', () async {
       page = await webScraper.loadWebPage('/test-sites/e-commerce/allinone');
       expect(page, true);
     });
     test('Elapsed Time', () {
       // time elapsed is integral value (in milliseconds)
-      int timeElapsed = webScraper.timeElaspsed;
-      print("Elapsed Time(in Milliseconds): " + timeElapsed.toString());
+      var timeElapsed = webScraper.timeElaspsed;
+      print('Elapsed Time(in Milliseconds): ' + timeElapsed.toString());
       expect(timeElapsed, isNotNull);
     });
     test('Parse tags', () async {
@@ -25,15 +25,15 @@ void main() {
       expect(productNames, isNotNull);
     });
     test('Fetching All Scripts', () {
-      List<String> scripts = webScraper.getAllScripts();
-      print("List of all script tags: ");
+      var scripts = webScraper.getAllScripts();
+      print('List of all script tags: ');
       print(scripts);
       expect(scripts, isNotNull);
     });
     test('Fetching Script variables', () {
       Map<String, List<String>> variables =
           webScraper.getScriptVariables(['j.async']);
-      print("List of all variable occurences: ");
+      print('List of all variable occurences: ');
       print(variables);
       expect(variables, isNotNull);
     });
