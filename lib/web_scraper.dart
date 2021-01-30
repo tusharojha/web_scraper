@@ -169,7 +169,7 @@ class WebScraper {
     }
     // Using query selector to get a list of particular element.
     var elements = _document.querySelectorAll(address);
-    
+
     var elementData = <String>[];
 
     for (var element in elements) {
