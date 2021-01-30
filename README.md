@@ -27,64 +27,10 @@ Note that as of version **0.0.6**, the project supports not only Flutter project
 
 ```dart
     final webScraper = WebScraper('https://webscraper.io');
-    // loadWebPage is an asynchronous method, so it needs to be placed inside an async function.
     if (await webScraper.loadWebPage('/test-sites/e-commerce/allinone')) {
-      // Reference page: https://webscraper.io/test-sites/e-commerce/allinone
-
-        // This will scrape the product names and links on the bottom row with 3 products.
-        // Since they are randomized at every GET request, your results should change often.
-        List<Map<String, dynamic>> elements = webScraper.getElement('div.row > div > div > div.caption > h4 > a', ['href']);
-        print(elements); // Returns a List of Map<String, dynamic> items.
-        // elements = [
-        // {'title': stringWithProduct1Name, 'attributes': {'href': stringWithProduct1Link}},
-        // {'title': stringWithProduct2Name, 'attributes': {'href': stringWithProduct2Link}},
-        // {'title': stringWithProduct3Name, 'attributes': {'href': stringWithProduct3Link}},
-        // ]
-
-        // This will scrape the page h1 element: "E-commerce training site"
-        List<String> titles = webScraper.getElementTitle('div.jumbotron > h1');
-        print(titles); // Returns a List of Strings.
-        // titles = ['E-commerce training site']
-
-        // This will scrape the "Home" button's href attribute on the left side.
-        List<String> attributes = webScraper.getElementAttribute('#side-menu > li.active > a', 'href');
-        print(attributes); // Returns a List of Strings.
-        // attributes = ['/test-sites/e-commerce/allinone']
+        List<Map<String, dynamic>> elements = webScraper.getElement('h3.title > a.caption', ['href']);
+        print(elements);
     }
-
-    // Alternatively, you can provide the URL in a single string with loadFromURL(). Since you are going this route, you can just skip providing a base URL to the WebScraper class constructor.
-    WebScraper simpleLoader = WebScraper();
-    // loadFromURL also is an asynchronous method, so it also needs to be placed inside an async function.
-    // This will either return a true bool if it loads successfully or throw an error if it doesn't.
-    if (await simpleLoader.loadFromURL('https://webscraper.io/test-sites/e-commerce/allinone') {
-      // After it loads, you can use any of the getElement methods just as you normally would.
-      List<Map<String, dynamic>> elements = simpleLoader.getElement('div.row > div > div > div.caption > h4 > a', ['href']);
-      print(elements);
-
-      List<String> titles = simpleLoader.getElementTitle('div.jumbotron > h1');
-      print(titles);
-
-      List<String> attributes = simpleLoader.getElementAttribute('#side-menu > li.active > a', 'href');
-      print(attributes);
-    }
-
-    // If you want to use compute functions to optmize performance and avoid application jank, there are helper methods for that.
-    WebScraper saveToString = WebScraper();
-    String stringBody;
-    if (await saveToString.loadFromURL('https://www.google.com/')) {
-      stringBody = stringLoader.getPageContent();
-    }
-
-    Map<String, String> yourComputeFunction(String stringBody) {
-      Map<String, String> yourMapOfData;
-      WebScraper stringLoader = WebScraper();
-      // loadFromString is synchronous.
-      stringLoader.loadFromString(stringBody)
-      // Perform your query operations here.
-      return yourMapOfData;
-    }
-
-    Map<String, String> dataYouNeed = compute(yourComputeFunction, stringBody);
 ```
 
 Checkout [`web_scraper_test.dart`](/test/web_scraper_test.dart) file to have closer look on all functionalities.
