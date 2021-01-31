@@ -7,9 +7,19 @@ void main() {
   group('Complete Web Scraper Test', () {
     bool page;
     var productNames = <Map<String, dynamic>>[];
-    test('Loads Webpage', () async {
+    test('Loads Webpage Route', () async {
       page = await webScraper.loadWebPage('/test-sites/e-commerce/allinone');
       expect(page, true);
+    });
+    test('Loads Full URL', () async {
+      expect(
+          await WebScraper().loadFullURL(
+              'https://webscraper.io/test-sites/e-commerce/allinone'),
+          true);
+    });
+    test('Gets Page Content & Loads from String', () {
+      final pageContent = webScraper.getPageContent();
+      expect(pageContent, isA<String>());
     });
     test('Elapsed Time', () {
       // time elapsed is integral value (in milliseconds)
@@ -17,7 +27,20 @@ void main() {
       print('Elapsed Time(in Milliseconds): ' + timeElapsed.toString());
       expect(timeElapsed, isNotNull);
     });
-    test('Parse tags', () async {
+
+    test('Get Element Title', () {
+      var names = webScraper
+          .getElementTitle('div.thumbnail > div.caption > h4 > a.title');
+      expect(names, isNotEmpty);
+    });
+
+    test('Get Element Attribute', () {
+      var names = webScraper.getElementAttribute(
+          'div.thumbnail > div.caption > h4 > a.title', 'title');
+      expect(names, isNotEmpty);
+    });
+
+    test('Get Elements by selector', () async {
       productNames = webScraper.getElement(
         'div.thumbnail > div.caption > h4 > a.title',
         ['href', 'title'],
