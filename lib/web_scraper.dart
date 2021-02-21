@@ -6,11 +6,11 @@
 */
 
 /// Web Scraper Library
-/// 
+///
 /// A very basic web scraper implementation to scrap html elements from a web page.
-/// 
+///
 /// Package supports for both dart & flutter.
-/// 
+///
 /// Contributions are welcome at https://github.com/tusharojha/web_scraper
 library web_scraper;
 
@@ -118,7 +118,7 @@ class WebScraper {
   }
 
   /// Returns Map between given variable names and list of their occurence in the script tags
-  /// 
+  ///
   /// ex. if document contains
   /// <script> var a = 15; var b = 10; </script>
   /// <script> var a = 9; </script>
@@ -189,7 +189,7 @@ class WebScraper {
   }
 
   /// Returns List of elements' attributes found at specified address respecting the provided attribute requirement.
-  /// 
+  ///
   /// Example address: "div.item > a.title" where item and title are class names of div and a tag respectively.
   /// For ease of access, when using Chrome inspection tool, right click the item you want to copy, then click "Inspect" and at the console, right click the highlighted item, right click and then click "Copy > Copy selector" and provide as String parameter to this method.
   /// Attributes are the bits of information between the HTML tags.
