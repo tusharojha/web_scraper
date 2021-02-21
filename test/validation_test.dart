@@ -1,5 +1,5 @@
 import 'package:test/test.dart';
-import 'package:web_scraper/validation.dart';
+import 'package:web_scraper/src/validation.dart';
 
 void main() {
   test('Error: use [http/https] protocol', () {
