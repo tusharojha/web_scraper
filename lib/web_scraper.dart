@@ -1,10 +1,17 @@
 /*
   Developed by Tushar Ojha
   GitHub: https://github.com/tusharojha
-  Twitter: https://twitter.com/tusharojha
+  Twitter: https://twitter.com/techtusharojha
   Feel free to improve the web_scraper library.
 */
 
+/// Web Scraper Library
+///
+/// A very basic web scraper implementation to scrap html elements from a web page.
+///
+/// Package supports for both dart & flutter.
+///
+/// Contributions are welcome at https://github.com/tusharojha/web_scraper
 library web_scraper;
 
 import 'dart:async';
@@ -13,7 +20,7 @@ import 'package:html/dom.dart';
 import 'package:html/parser.dart'; // Contains HTML parsers to generate a Document object.
 import 'package:http/http.dart'; // Contains a client for making API calls.
 
-import 'validation.dart';
+import 'src/validation.dart'; // Contains validation functions for URLs
 
 /// WebScraper Main Class.
 class WebScraper {
@@ -79,9 +86,8 @@ class WebScraper {
   }
 
   /// Loads a webpage that was previously loaded and stored as a String by using [getPageContent()].
-  /// This exists as a helper function in order to facilitate the use of [compute()] functions in your Flutter apps.
-  /// This operation is synchronous and returns a [true] bool once the string has been loaded and is ready to
-  /// be queried by either [getElement()], [getElementTitle] or [getElementAttribute].
+  /// This operation is synchronous and returns a true bool once the string has been loaded and is ready to
+  /// be queried by either [getElement], [getElementTitle] or [getElementAttribute].
   bool loadFromString(String responseBodyAsString) {
     try {
       // Parses the response body once it's retrieved to be used on the other methods.
@@ -112,6 +118,7 @@ class WebScraper {
   }
 
   /// Returns Map between given variable names and list of their occurence in the script tags
+  ///
   /// ex. if document contains
   /// <script> var a = 15; var b = 10; </script>
   /// <script> var a = 9; </script>
@@ -129,7 +136,7 @@ class WebScraper {
     for (var script in scripts) {
       // Looping in all the variable names that are required to extract.
       for (var variableName in variableNames) {
-        // regular expression to get the variable names
+        // Regular expression to get the variable names.
         var re = RegExp(
             '$variableName *=.*?;(?=([^\"\']*\"[^\"\']*\")*[^\"\']*\$)',
             multiLine: true);
@@ -137,7 +144,7 @@ class WebScraper {
         Iterable matches = re.allMatches(script.text);
         matches.forEach((match) {
           if (match != null) {
-            // list for all the occurence of the variable name
+            // List for all the occurence of the variable name.
             var temp = result[variableName];
             if (result[variableName] == null) {
               temp = [];
@@ -182,6 +189,7 @@ class WebScraper {
   }
 
   /// Returns List of elements' attributes found at specified address respecting the provided attribute requirement.
+  ///
   /// Example address: "div.item > a.title" where item and title are class names of div and a tag respectively.
   /// For ease of access, when using Chrome inspection tool, right click the item you want to copy, then click "Inspect" and at the console, right click the highlighted item, right click and then click "Copy > Copy selector" and provide as String parameter to this method.
   /// Attributes are the bits of information between the HTML tags.
