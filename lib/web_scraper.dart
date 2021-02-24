@@ -220,7 +220,11 @@ class WebScraper {
 
   /// Returns List of elements found at specified address.
   /// Example address: "div.item > a.title" where item and title are class names of div and a tag respectively.
-  List<Map<String, dynamic>> getElement(String address, List<String> attribs) {
+  ///
+  /// Sometimes the last address is not present consistently throughout the webpage. Use "extraAddress" to catch its attributes.
+  /// Example extraAddress: "a"
+  List<Map<String, dynamic>> getElement(String address, List<String> attribs,
+      {String extraAddress}) {
     // Attribs are the list of attributes required to extract from the html tag(s) ex. ['href', 'title'].
     if (_document == null) {
       throw WebScraperException(
@@ -234,7 +238,14 @@ class WebScraper {
     for (var element in elements) {
       var attribData = <String, dynamic>{};
       for (var attrib in attribs) {
-        attribData[attrib] = element.attributes[attrib];
+        if (extraAddress != null) {
+          var extraElement = element.querySelector(extraAddress);
+          if (extraElement != null) {
+            attribData[attrib] = extraElement.attributes[attrib];
+          }
+        } else {
+          attribData[attrib] = element.attributes[attrib];
+        }
       }
       elementData.add({
         'title': element.text,
