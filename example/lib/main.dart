@@ -14,8 +14,8 @@ class _WebScraperAppState extends State<WebScraperApp> {
   final webScraper = WebScraper('https://webscraper.io');
 
   // Response of getElement is always List<Map<String, dynamic>>
-  List<Map<String, dynamic>> productNames;
-  List<Map<String, dynamic>> productDescriptions;
+  List<Map<String, dynamic>>? productNames;
+  late List<Map<String, dynamic>> productDescriptions;
 
   void fetchProducts() async {
     // Loads web page and downloads into local state of library
@@ -57,11 +57,11 @@ class _WebScraperAppState extends State<WebScraperApp> {
                           CircularProgressIndicator(), // Loads Circular Loading Animation
                     )
                   : ListView.builder(
-                      itemCount: productNames.length,
+                      itemCount: productNames!.length,
                       itemBuilder: (BuildContext context, int index) {
                         // Attributes are in the form of List<Map<String, dynamic>>.
                         Map<String, dynamic> attributes =
-                            productNames[index]['attributes'];
+                            productNames![index]['attributes'];
                         return ExpansionTile(
                           title: Text(attributes['title']),
                           children: <Widget>[
@@ -77,7 +77,7 @@ class _WebScraperAppState extends State<WebScraperApp> {
                                   InkWell(
                                     onTap: () {
                                       // uses UI Launcher to launch in web browser & minor tweaks to generate url
-                                      launch(webScraper.baseUrl +
+                                      launch(webScraper.baseUrl! +
                                           attributes['href']);
                                     },
                                     child: Text(
