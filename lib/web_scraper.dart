@@ -85,7 +85,7 @@ class WebScraper {
     return true;
   }
 
-  /// Loads a webpage that was previously loaded and stored as a String by using [getPageContent()].
+  /// Loads a webpage that was previously loaded and stored as a String by using [getPageContent].
   /// This operation is synchronous and returns a true bool once the string has been loaded and is ready to
   /// be queried by either [getElement], [getElementTitle] or [getElementAttribute].
   bool loadFromString(String responseBodyAsString) {
@@ -119,10 +119,10 @@ class WebScraper {
 
   /// Returns Map between given variable names and list of their occurence in the script tags
   ///
-  /// ex. if document contains
-  /// <script> var a = 15; var b = 10; </script>
-  /// <script> var a = 9; </script>
-  /// method will return {a: ['var a = 15;', 'var a = 9;'], b: ['var b = 10;'] }.
+  // ex. if document contains
+  // <script> var a = 15; var b = 10; </script>
+  // <script> var a = 9; </script>
+  // method will return {a: ['var a = 15;', 'var a = 9;'], b: ['var b = 10;'] }.
   Map<String, dynamic> getScriptVariables(List<String> variableNames) {
     // The _document should not be null (loadWebPage must be called before getScriptVariables).
     assert(_document != null);
