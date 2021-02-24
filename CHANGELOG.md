@@ -1,3 +1,11 @@
+## [0.0.9] - 24/02/2021
+
+* Added getElementTitle & getElementAttribute methods for simpler scraping tasks
+* Included functions like loadFromURL & loadFromString for better range of uses
+* Improved processing speed by avoiding re-parsing of webpages
+* Added extraElement attribute inside getElement method for inconsistent webpages
+* Updated documentations & unit testing for library
+
 ## [0.0.8] - 13/11/2020
 
 * Added pedantic for internal testing
