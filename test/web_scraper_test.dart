@@ -54,8 +54,7 @@ void main() {
       expect(scripts, isNotNull);
     });
     test('Fetching Script variables', () {
-      Map<String, List<String>> variables =
-          webScraper.getScriptVariables(['j.async']);
+      var variables = webScraper.getScriptVariables(['j.async']);
       print('List of all variable occurences: ');
       print(variables);
       expect(variables, isNotNull);

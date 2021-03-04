@@ -1,3 +1,12 @@
+## [0.1.4] - 24/02/2021
+
+* Migrated to null-safety
+* Formatted dart files
+  
+## [0.1.2] - 24/02/2021
+
+* Migrated to null-safety
+
 ## [0.0.9] - 24/02/2021
 
 * Added getElementTitle & getElementAttribute methods for simpler scraping tasks

@@ -25,16 +25,16 @@ import 'src/validation.dart'; // Contains validation functions for URLs
 /// WebScraper Main Class.
 class WebScraper {
   // Parsed document from the response inside the try/catch of the loadWebPage() method.
-  Document _document;
+  Document? _document;
 
   // Time elapsed in loading in milliseconds.
-  int timeElaspsed;
+  int? timeElaspsed;
 
   // Base url of the website to be scrapped.
-  String baseUrl;
+  String? baseUrl;
 
   /// Creates the web scraper instance.
-  WebScraper([String baseUrl]) {
+  WebScraper([String? baseUrl]) {
     if (baseUrl != null) {
       var v = Validation().isBaseURL(baseUrl);
       if (!v.isCorrect) {
@@ -51,17 +51,15 @@ class WebScraper {
       var client = Client();
 
       try {
-        var _response = await client.get(baseUrl + route);
+        var _response = await client.get(Uri.parse(baseUrl! + route));
         // Calculating Time Elapsed using timer from dart:core.
-        if (_response != null) {
-          timeElaspsed = stopwatch.elapsed.inMilliseconds;
-          stopwatch.stop();
-          stopwatch.reset();
-          // Parses the response body once it's retrieved to be used on the other methods.
-          _document = parse(_response.body);
-        }
+        timeElaspsed = stopwatch.elapsed.inMilliseconds;
+        stopwatch.stop();
+        stopwatch.reset();
+        // Parses the response body once it's retrieved to be used on the other methods.
+        _document = parse(_response.body);
       } catch (e) {
-        throw WebScraperException(e.message);
+        throw WebScraperException(e.toString());
       }
       return true;
     }
@@ -73,14 +71,12 @@ class WebScraper {
   Future<bool> loadFullURL(String page) async {
     var client = Client();
     try {
-      var _response = await client.get(page);
+      var _response = await client.get(Uri.parse(page));
       // Calculating Time Elapsed using timer from dart:core.
-      if (_response != null) {
-        // Parses the response body once it's retrieved to be used on the other methods.
-        _document = parse(_response.body);
-      }
+      // Parses the response body once it's retrieved to be used on the other methods.
+      _document = parse(_response.body);
     } catch (e) {
-      throw WebScraperException(e.message);
+      throw WebScraperException(e.toString());
     }
     return true;
   }
@@ -93,7 +89,7 @@ class WebScraper {
       // Parses the response body once it's retrieved to be used on the other methods.
       _document = parse(responseBodyAsString);
     } catch (e) {
-      throw WebScraperException(e.message);
+      throw WebScraperException(e.toString());
     }
     return true;
   }
@@ -104,7 +100,7 @@ class WebScraper {
     assert(_document != null);
 
     // Quering the list of elements by tag names.
-    var scripts = _document.getElementsByTagName('script');
+    var scripts = _document!.getElementsByTagName('script');
     var result = <String>[];
 
     // Looping in all script tags of the document.
@@ -128,9 +124,9 @@ class WebScraper {
     assert(_document != null);
 
     // Quering the list of elements by tag names.
-    var scripts = _document.getElementsByTagName('script');
+    var scripts = _document!.getElementsByTagName('script');
 
-    var result = <String, List<String>>{};
+    var result = <String, List<String>?>{};
 
     // Looping in all the script tags of the document.
     for (var script in scripts) {
@@ -149,7 +145,7 @@ class WebScraper {
             if (result[variableName] == null) {
               temp = [];
             }
-            temp.add(script.text.substring(match.start, match.end));
+            temp!.add(script.text.substring(match.start, match.end));
             result[variableName] = temp;
           }
         });
@@ -162,7 +158,7 @@ class WebScraper {
 
   /// Returns webpage's html in string format.
   String getPageContent() => _document != null
-      ? _document.outerHtml
+      ? _document!.outerHtml
       : throw WebScraperException(
           'ERROR: Webpage need to be loaded first, try calling loadWebPage');
 
@@ -175,7 +171,7 @@ class WebScraper {
           'getElement cannot be called before loadWebPage');
     }
     // Using query selector to get a list of particular element.
-    var elements = _document.querySelectorAll(address);
+    var elements = _document!.querySelectorAll(address);
 
     var elementData = <String>[];
 
@@ -196,16 +192,16 @@ class WebScraper {
   /// For example in <div class="strong and bold" style="width: 100%;" title="Fierce!">
   /// The element would be "div.strong.and.bold" and the possible attributes to fetch would be EIHER "style" OR "title" returning with EITHER of the values "width: 100%;" OR "Fierce!" respectively.
   /// To retrieve multiple attributes at once from a single element, please use getElement() instead.
-  List<String> getElementAttribute(String address, String attrib) {
+  List<String?> getElementAttribute(String address, String attrib) {
     // Attribs are the list of attributes required to extract from the html tag(s) ex. ['href', 'title'].
     if (_document == null) {
       throw WebScraperException(
           'getElement cannot be called before loadWebPage');
     }
     // Using query selector to get a list of particular element.
-    var elements = _document.querySelectorAll(address);
+    var elements = _document!.querySelectorAll(address);
     // ignore: omit_local_variable_types
-    List<String> elementData = [];
+    List<String?> elementData = [];
 
     for (var element in elements) {
       var attribData = <String, dynamic>{};
@@ -224,14 +220,14 @@ class WebScraper {
   /// Sometimes the last address is not present consistently throughout the webpage. Use "extraAddress" to catch its attributes.
   /// Example extraAddress: "a"
   List<Map<String, dynamic>> getElement(String address, List<String> attribs,
-      {String extraAddress}) {
+      {String? extraAddress}) {
     // Attribs are the list of attributes required to extract from the html tag(s) ex. ['href', 'title'].
     if (_document == null) {
       throw WebScraperException(
           'getElement cannot be called before loadWebPage');
     }
     // Using query selector to get a list of particular element.
-    var elements = _document.querySelectorAll(address);
+    var elements = _document!.querySelectorAll(address);
     // ignore: omit_local_variable_types
     List<Map<String, dynamic>> elementData = [];
 
@@ -259,10 +255,10 @@ class WebScraper {
 /// WebScraperException throws exception with specified message.
 class WebScraperException implements Exception {
   var _message;
-  WebScraperException(String message) {
+  WebScraperException(String? message) {
     _message = message;
   }
-  String errorMessage() {
+  String? errorMessage() {
     return _message;
   }
 }
