@@ -28,8 +28,8 @@ Note that as of version **0.0.6**, the project supports not only Flutter project
 ```dart
     final webScraper = WebScraper('https://webscraper.io');
     if (await webScraper.loadWebPage('/test-sites/e-commerce/allinone')) {
-        List<Map<String, dynamic>> elements = webScraper.getElement('h3.title > a.caption', ['href']);
-        print(elements);
+      List<Map<String, dynamic>> elements = webScraper.getElement('div.thumbnail > div.caption', ['h4']);
+      print(elements);
     }
 ```
 
