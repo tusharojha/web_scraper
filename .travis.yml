@@ -1,6 +1,7 @@
 language: dart
 dart:
-- stable
+  - 2.13.3
+  - stable
 dart_task:
 - test
 - dartanalyzer: --fatal-warnings lib
