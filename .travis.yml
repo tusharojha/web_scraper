@@ -3,5 +3,6 @@ dart:
 - stable
 dart_task:
 - test
-- dartanalyzer: --fatal-warnings lib test
+- dartanalyzer: --fatal-warnings lib
+- dartanalyzer: --fatal-warnings test
 - dartfmt
