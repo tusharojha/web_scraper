@@ -33,6 +33,8 @@ class WebScraper {
   // Base url of the website to be scrapped.
   String? baseUrl;
 
+  String? userAgent;
+
   /// Creates the web scraper instance.
   WebScraper([String? baseUrl]) {
     if (baseUrl != null) {
@@ -48,7 +50,7 @@ class WebScraper {
   Future<bool> loadWebPage(String route) async {
     if (baseUrl != null && baseUrl != '') {
       final stopwatch = Stopwatch()..start();
-      var client = Client();
+      var client = getClient(userAgent);
 
       try {
         var _response = await client.get(Uri.parse(baseUrl! + route));
@@ -69,7 +71,7 @@ class WebScraper {
   /// Loads the webpage URL into response object without requiring the two-step process of base + route.
   /// Unlike the the two-step process, the URL is NOT validated before being requested.
   Future<bool> loadFullURL(String page) async {
-    var client = Client();
+    var client = getClient(userAgent);
     try {
       var _response = await client.get(Uri.parse(page));
       // Calculating Time Elapsed using timer from dart:core.
@@ -250,6 +252,14 @@ class WebScraper {
     }
     return elementData;
   }
+
+  T getClient<T extends BaseClient>(String? userAgent) {
+    if (userAgent != null) {
+      return UserAgentClient(userAgent, Client()) as T;
+    } else {
+      return Client() as T;
+    }
+  }
 }
 
 /// WebScraperException throws exception with specified message.
@@ -260,5 +270,17 @@ class WebScraperException implements Exception {
   }
   String? errorMessage() {
     return _message;
+  }
+}
+
+class UserAgentClient extends BaseClient {
+  final String userAgent;
+  final Client _inner;
+
+  UserAgentClient(this.userAgent, this._inner);
+
+  Future<StreamedResponse> send(BaseRequest request) {
+    request.headers['User-Agent'] = userAgent;
+    return _inner.send(request);
   }
 }

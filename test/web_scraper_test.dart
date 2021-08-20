@@ -59,5 +59,12 @@ void main() {
       print(variables);
       expect(variables, isNotNull);
     });
+    test('Set / Get UserAgent', () {
+      var expectedUserAgent = "test user agent";
+      webScraper.userAgent = expectedUserAgent;
+      var useragent = webScraper.userAgent;
+      print(useragent);
+      expect(useragent, expectedUserAgent);
+    });
   });
 }
