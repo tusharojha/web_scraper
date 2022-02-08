@@ -1,9 +1,0 @@
-language: dart
-dart:
-  - 2.13.3
-  - stable
-dart_task:
-- test
-- dartanalyzer: --fatal-warnings lib
-- dartanalyzer: --fatal-warnings test
-- dartfmt
