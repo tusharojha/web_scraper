@@ -156,6 +156,39 @@ class WebScraper {
     return result;
   }
 
+  /// Returns the first occurance of a variable in the script tags
+  ///
+  // ex. if document contains
+  // <script> var a = 15;</script>
+  // <script> var a = 9; </script>
+  // method will return 'var a = 15;'.
+  String getFirstScriptVariable(String variableName) {
+    // The _document should not be null (loadWebPage must be called before getScriptVariables).
+    assert(_document != null);
+
+    // Quering the list of elements by tag names.
+    var scripts = _document!.getElementsByTagName('script');
+
+    String result = '';
+
+    // Looping in all the script tags of the document.
+    for (var script in scripts) {
+      // Regular expression to get the variable name.
+      var re = RegExp(variableName + r""" *=.*?;(?=([^"']*"[^"']*")*[^"']*$)""",
+          multiLine: true);
+      //  Find first match
+      RegExpMatch? match = re.firstMatch(script.text);
+
+      if (match != null) {
+        result = match[0]!;
+        break;
+      }
+    }
+
+    // Returning final result
+    return result;
+  }
+
   /// Returns webpage's html in string format.
   String getPageContent() => _document != null
       ? _document!.outerHtml
