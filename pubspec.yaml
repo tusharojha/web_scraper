@@ -1,5 +1,6 @@
 name: web_scraper
-description: A simple web scraper to scrape HTML tags and their attributes to cast them into Lists and Maps for dart and flutter.
+description: A simple web scraper to scrape HTML tags and their attributes to
+  cast them into Lists and Maps for dart and flutter.
 version: 0.1.4
 homepage: https://github.com/tusharojha/web_scraper
 
@@ -8,8 +9,9 @@ environment:
 
 dependencies:
   html: ^0.15.0
-  http: ^0.13.0
+  http: ^0.13.4
 
 dev_dependencies:
-  test: ^1.16.4
-  pedantic: ^1.10.0
+  pedantic: ^1.11.1
+  test: ^1.21.4
+  flutter_lints: ^2.0.0
