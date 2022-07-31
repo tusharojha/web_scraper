@@ -186,7 +186,7 @@ class WebScraper {
     }
 
     // Returning final result
-    return result;
+    return result.trim();
   }
 
   /// Returns webpage's html in string format.
