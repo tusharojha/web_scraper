@@ -174,8 +174,8 @@ class WebScraper {
     // Looping in all the script tags of the document.
     for (var script in scripts) {
       // Regular expression to get the variable name.
-      var re = RegExp(variableName + r""" *=.*?;(?=([^"']*"[^"']*")*[^"']*$)""",
-          multiLine: true);
+      var re =
+          RegExp(variableName + r""" *=.*?;(\r\n|\r|\n)""", multiLine: true);
       //  Find first match
       RegExpMatch? match = re.firstMatch(script.text);
 
