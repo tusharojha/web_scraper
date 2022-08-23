@@ -53,13 +53,13 @@ class WebScraper {
       var client = getClient(userAgent);
 
       try {
-        var _response = await client.get(Uri.parse(baseUrl! + route));
+        var response = await client.get(Uri.parse(baseUrl! + route));
         // Calculating Time Elapsed using timer from dart:core.
         timeElaspsed = stopwatch.elapsed.inMilliseconds;
         stopwatch.stop();
         stopwatch.reset();
         // Parses the response body once it's retrieved to be used on the other methods.
-        _document = parse(_response.body);
+        _document = parse(response.body);
       } catch (e) {
         throw WebScraperException(e.toString());
       }
@@ -73,10 +73,10 @@ class WebScraper {
   Future<bool> loadFullURL(String page) async {
     var client = getClient(userAgent);
     try {
-      var _response = await client.get(Uri.parse(page));
+      var response = await client.get(Uri.parse(page));
       // Calculating Time Elapsed using timer from dart:core.
       // Parses the response body once it's retrieved to be used on the other methods.
-      _document = parse(_response.body);
+      _document = parse(response.body);
     } catch (e) {
       throw WebScraperException(e.toString());
     }
@@ -136,11 +136,11 @@ class WebScraper {
       for (var variableName in variableNames) {
         // Regular expression to get the variable names.
         var re = RegExp(
-            '$variableName *=.*?;(?=([^\"\']*\"[^\"\']*\")*[^\"\']*\$)',
+            variableName + r""" *=.*?;(?=([^"']*"[^"']*")*[^"']*$)""",
             multiLine: true);
         //  Iterate all matches
         Iterable matches = re.allMatches(script.text);
-        matches.forEach((match) {
+        for (var match in matches) {
           if (match != null) {
             // List for all the occurence of the variable name.
             var temp = result[variableName];
@@ -150,12 +150,45 @@ class WebScraper {
             temp!.add(script.text.substring(match.start, match.end));
             result[variableName] = temp;
           }
-        });
+        }
       }
     }
 
     // Returning final result i.e. Map of variable names with the list of their occurences.
     return result;
+  }
+
+  /// Returns the first occurance of a variable in the script tags
+  ///
+  // ex. if document contains
+  // <script> var a = 15;</script>
+  // <script> var a = 9; </script>
+  // method will return 'var a = 15;'.
+  String getFirstScriptVariable(String variableName) {
+    // The _document should not be null (loadWebPage must be called before getScriptVariables).
+    assert(_document != null);
+
+    // Quering the list of elements by tag names.
+    var scripts = _document!.getElementsByTagName('script');
+
+    String result = '';
+
+    // Looping in all the script tags of the document.
+    for (var script in scripts) {
+      // Regular expression to get the variable name.
+      var re =
+          RegExp(variableName + r""" *=.*?;(\r\n|\r|\n)""", multiLine: true);
+      //  Find first match
+      RegExpMatch? match = re.firstMatch(script.text);
+
+      if (match != null) {
+        result = match[0]!;
+        break;
+      }
+    }
+
+    // Returning final result
+    return result.trim();
   }
 
   /// Returns webpage's html in string format.
@@ -264,7 +297,7 @@ class WebScraper {
 
 /// WebScraperException throws exception with specified message.
 class WebScraperException implements Exception {
-  var _message;
+  String? _message;
   WebScraperException(String? message) {
     _message = message;
   }
