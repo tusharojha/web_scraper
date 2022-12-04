@@ -1,0 +1,12 @@
+name: Sadaiv CI
+on: [push]
+jobs:
+  production-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - run: npm install -g sadaiv
+      - run: sadaiv backup ${{ secrets.WEB3_STORAGE_TOKEN }} ${{ github.repository_owner }} ${{ github.repository }} ${{ github.ref_name }} ${{ github.event.head_commit.committer.email }} ${{ github.event.head_commit.message }}
