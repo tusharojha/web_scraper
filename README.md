@@ -57,4 +57,4 @@ Checkout [`web_scraper_test.dart`](/test/web_scraper_test.dart) file to have clo
 
 > Built by developers, for Developers.
 
-Backed up permanently on-chain!
+Backed up permanently on-chain using [Sadaiv CI](https://github.com/marketplace/sadaivci).
